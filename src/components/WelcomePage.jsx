@@ -75,8 +75,6 @@ const WelcomePage = () => {
         <Badge>World’s Most Adopted HealthCare AI</Badge>
         <Title>Transforming X-rays into Clarity and Care.</Title>
         <Button onClick={() => navigate("/login")}>Start Now</Button>
-        <Button onClick={() => navigate("/about")}>Learn More</Button>
-        <Button onClick={() => navigate("/contact")}>Contact Us</Button>
       </LeftContent>
 
       {/* Right Side Image */}
