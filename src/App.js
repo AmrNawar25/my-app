@@ -8,6 +8,8 @@ import MeetTheTeam from "./components/MeetTheTeam";
 import ContactUs from "./components/ContactUs";
 import SignupPage from "./components/SignUpPage";
 import LoginPage from "./components/LoginPage";
+import PatientUpload from "./components/PatientUpload";
+
 function App() {
   return (
     <Router>
@@ -17,6 +19,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/PatientUpload" element={<PatientUpload />} />
         </Routes>
       </>
     </Router>
@@ -30,8 +33,10 @@ const Home = () => (
     <HowItWorks />
     <XrayPage />
     <MeetTheTeam />
+    
     <ContactUs />
   </>
+  
 );
 
 export default App;

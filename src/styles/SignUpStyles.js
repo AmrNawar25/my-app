@@ -1,110 +1,94 @@
 import styled, { keyframes } from "styled-components";
 
-// 🚀 Fade-in animation on load
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+// Background Gradient Animation
+const gradientAnimation = keyframes`
+  0% { background-position: 90% 90%; }
+  50% { background-position: 50% 50%; }
+  100% { background-position: 100% 100%; }
 `;
 
-// 🚀 Floating Animation (slow up & down movement)
-const floatAnimation = keyframes`
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0px); }
+// AI Particle Floating Animation
+const floatParticles = keyframes`
+  0% { transform: translateY(0) scale(1); opacity: 0.8; }
+  50% { transform: translateY(-10px) scale(1.2); opacity: 1; }
+  100% { transform: translateY(0) scale(1); opacity: 0.8; }
 `;
 
-// Main Container
+// AI Connection Line Animation
+const glowLines = keyframes`
+  0% { opacity: 0.2; transform: scaleX(1); }
+  50% { opacity: 0.6; transform: scaleX(1.2); }
+  100% { opacity: 0.2; transform: scaleX(1); }
+`;
+
+// 🌟 Main Container with animated background
 export const SignUpContainer = styled.div`
   display: flex;
   height: 100vh;
   align-items: center;
-  justify-content: center;
-  background: #f8f8f8;
+  justify-content: space-between;
+  background: linear-gradient(-45deg, black, #c99833);
+  background-size: 300% 300%;
+  animation: ${gradientAnimation} 5s ease infinite;
+  padding: 0 10%;
+  position: relative;
   overflow: hidden;
 
   @media (max-width: 768px) {
     flex-direction: column;
     height: auto;
+    padding: 2rem 1rem;
   }
 `;
 
-// Left Side Panel with Rounded Corners
+// 🌟 Left Image Panel (Eye or Illustration)
 export const LeftPanel = styled.div`
-  background: rgb(122, 90, 27); /* Dark brown */
-  width: 40%;
-  height: 100%;
+  width: 50%;
   display: flex;
-  align-items: center;
   justify-content: center;
-  border-top-right-radius: 30px;
-  border-bottom-right-radius: 30px;
-  overflow: hidden;
 
   @media (max-width: 768px) {
     width: 100%;
-    height: 300px;
-    border-radius: 0;
+    margin-bottom: 2rem;
   }
 `;
 
-// 🚀 Animated Art Image (Eye)
+// 🌟 Animated Image (Eye)
 export const ArtImage = styled.img`
-  width: 90%;
-  max-width: 500px;
-  border-top-left-radius: 30px;
-  border-bottom-left-radius: 30px;
-  animation: ${fadeIn} 1.5s ease-in-out, ${floatAnimation} 4s ease-in-out infinite;
-
-  &:hover {
-    filter: drop-shadow(0px 0px 15px rgba(255, 215, 0, 0.6)); /* Soft gold glow */
-    transform: scale(1.05);
-    transition: 0.3s ease-in-out;
-  }
-
-  @media (max-width: 768px) {
-    width: 70%;
-  }
+  max-width: 100%;
+  height: auto;
 `;
 
-// Form Box (Right Side)
+// 🌟 Form Container (Right)
 export const FormContainer = styled.div`
+  width: 50%;
   background: white;
-  padding: 3rem;
-  width: 60%;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 50px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 
   @media (max-width: 768px) {
     width: 100%;
-    height: auto;
     padding: 2rem;
   }
 
   h2 {
     font-size: 1.8rem;
-    color: #c29550; /* Gold */
+    color: #c99833;
     margin-bottom: 1rem;
   }
 
   p {
     font-size: 0.9rem;
-    color: #c29550;
+    color: #c99833;
     margin: 10px 0;
   }
 
   p a {
-    color: rgb(0, 0, 0);
-    text-decoration: none;
+    color: black;
     font-weight: bold;
+    text-decoration: none;
   }
 
   .input-group {
@@ -131,41 +115,35 @@ export const FormContainer = styled.div`
   }
 `;
 
-// Input Fields
+// 🌟 Input Fields
 export const InputField = styled.input`
   width: 100%;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #c99833;
+  border-radius: 5px;
   font-size: 1rem;
-  margin-top: 10px;
-  outline: none;
-  transition: border 0.3s ease-in-out;
-
-  &:focus {
-    border-color: #c29550;
-  }
 `;
 
-// Signup Button
+// 🌟 Button
 export const StyledButton = styled.button`
-  background: #c29550;
-  color: white;
-  padding: 12px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
   width: 100%;
-  margin-top: 15px;
-  transition: 0.3s;
+  padding: 12px;
+  font-size: 1.2rem;
+  background: #c99833;
+  color: black;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
 
   &:hover {
-    background: #a67c42;
+    background: #a8772b;
+    transform: scale(1.05);
   }
 `;
 
-// Social Buttons
+// 🌟 Social Buttons
 export const SocialButtons = styled.div`
   display: flex;
   flex-direction: column;
@@ -198,5 +176,54 @@ export const SocialButtons = styled.div`
 
   .google:hover {
     background: #f1f1f1;
+  }
+`;
+
+// 🌟 AI Particles Container
+export const ParticlesContainer = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+`;
+
+// 🌟 AI Particle
+export const Particle = styled.div`
+  position: absolute;
+  top: ${(props) => props.top};
+  left: ${(props) => props.left};
+  width: ${(props) => props.size};
+  height: ${(props) => props.size};
+  background: radial-gradient(circle, #ffc107 0%, transparent 70%);
+  border-radius: 50%;
+  opacity: 0.8;
+  animation: ${floatParticles} ${(props) => props.duration} infinite ease-in-out;
+`;
+
+// 🌟 Connection Line
+export const Line = styled.div`
+  position: absolute;
+  top: ${(props) => props.top};
+  left: ${(props) => props.left};
+  width: ${(props) => props.width};
+  height: 2px;
+  background: linear-gradient(to right, #ffc107, transparent);
+  animation: ${glowLines} 3s infinite ease-in-out;
+  opacity: 0.4;
+`;
+
+// 🌟 Forgot Password
+export const ForgotPassword = styled.a`
+  display: block;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  color: #c99833;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s ease-in-out;
+
+  &:hover {
+    color: #a8772b;
+    text-decoration: underline;
   }
 `;

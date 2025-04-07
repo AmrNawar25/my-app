@@ -9,6 +9,7 @@ import {
   MemberName,
   MemberRole,
 } from "../styles/MeetTheTeamStyles";
+import styled from "styled-components";
 
 // Team Data
 const teamMembers = [
@@ -19,51 +20,43 @@ const teamMembers = [
   { name: "Amr Nawar", role: "Software", image: require("../assets/Nawar.jpg") },
 ];
 
+// Dr. Mohamed (Supervisor)
+const supervisor = { name: "Dr. Mohamed", role: "Supervisor", image: require("../assets/Dr. Mohamed.jpg") };
+
+// Styled container to center Dr. Mohamed at the top
+const SupervisorWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+`;
+
 const MeetTheTeam = () => {
   return (
     <TeamContainer>
       <TeamTitle>Meet the Team</TeamTitle>
+
+      {/* Dr. Mohamed - Center Top */}
+      <SupervisorWrapper>
+        <TeamMember>
+          <MemberImage src={supervisor.image} alt={supervisor.name} />
+          <MemberInfo>
+            <MemberName>{supervisor.name}</MemberName>
+            <MemberRole>{supervisor.role}</MemberRole>
+          </MemberInfo>
+        </TeamMember>
+      </SupervisorWrapper>
+
+      {/* Rest of the team */}
       <TeamGrid>
-        {/* First Row */}
-        <TeamMember>
-          <MemberImage src={teamMembers[0].image} alt={teamMembers[0].name} />
-          <MemberInfo>
-            <MemberName>{teamMembers[0].name}</MemberName>
-            <MemberRole>{teamMembers[0].role}</MemberRole>
-          </MemberInfo>
-        </TeamMember>
-        <TeamMember>
-          <MemberImage src={teamMembers[1].image} alt={teamMembers[1].name} />
-          <MemberInfo>
-            <MemberName>{teamMembers[1].name}</MemberName>
-            <MemberRole>{teamMembers[1].role}</MemberRole>
-          </MemberInfo>
-        </TeamMember>
-
-        {/* Second Row (Centered) */}
-        <TeamMember className="center">
-          <MemberImage src={teamMembers[2].image} alt={teamMembers[2].name} />
-          <MemberInfo>
-            <MemberName>{teamMembers[2].name}</MemberName>
-            <MemberRole>{teamMembers[2].role}</MemberRole>
-          </MemberInfo>
-        </TeamMember>
-
-        {/* Third Row */}
-        <TeamMember>
-          <MemberImage src={teamMembers[3].image} alt={teamMembers[3].name} />
-          <MemberInfo>
-            <MemberName>{teamMembers[3].name}</MemberName>
-            <MemberRole>{teamMembers[3].role}</MemberRole>
-          </MemberInfo>
-        </TeamMember>
-        <TeamMember>
-          <MemberImage src={teamMembers[4].image} alt={teamMembers[4].name} />
-          <MemberInfo>
-            <MemberName>{teamMembers[4].name}</MemberName>
-            <MemberRole>{teamMembers[4].role}</MemberRole>
-          </MemberInfo>
-        </TeamMember>
+        {teamMembers.map((member, index) => (
+          <TeamMember key={index}>
+            <MemberImage src={member.image} alt={member.name} />
+            <MemberInfo>
+              <MemberName>{member.name}</MemberName>
+              <MemberRole>{member.role}</MemberRole>
+            </MemberInfo>
+          </TeamMember>
+        ))}
       </TeamGrid>
     </TeamContainer>
   );

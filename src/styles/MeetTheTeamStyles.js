@@ -10,7 +10,7 @@ export const TeamContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: -200px; /* Ensure no extra space */
+  margin-bottom: -50px; /* Ensure no extra space */
 
 `;
 
