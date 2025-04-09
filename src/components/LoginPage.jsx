@@ -1,4 +1,6 @@
-import React from "react";
+import React , {useState} from "react";
+import { validateEmail , loginUser } from "../utils/AuthUtils";
+import { useNavigate } from 'react-router-dom';
 import {
   Container,
   LeftContent,
@@ -14,6 +16,51 @@ import {
 import eyeImage from "../assets/welcome-image.png"; // Ensure this path is correct
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+
+  const [formData , setFormData] = useState({
+    Email : '',
+    Password: ''
+  })
+
+  const [errors , setErrors] = useState({})
+
+  const handleChange = (e) =>{
+    const {name , value} = e.target;
+    setFormData(prev => ({...prev,[name]:value}));
+  };
+
+  const handleSubmit = async(e) =>{
+    e.preventDefault();
+
+    const newErrors = {}
+
+    if (!validateEmail(formData.Email)) newErrors.email = "Invalid email";
+    if (Object.keys(newErrors).length >0){
+      setErrors(newErrors)
+      return
+    }
+
+    try{
+      const response = await loginUser(formData);
+
+      console.log(response.status)
+
+      if (response.status === 200){
+        navigate('/PatientUpload')
+      }
+      else if (response.status === 401 || response.statu === 400 ){
+        setErrors({api:"Invalid login credentials"})
+      }
+      else{
+        setErrors({api:"Something went wrong. please try again"})
+      }
+    }
+    catch(err){
+      setErrors({api:err.message})
+    }
+  };
+
   return (
     <Container>
       {/* Left Side - Eye Image Animation */}
@@ -24,10 +71,16 @@ const LoginPage = () => {
       {/* Right Side - Login Form */}
       <RightContent>
         <h2>Login to Your Account</h2>
-        <Input type="email" placeholder="Email" />
-        <Input type="password" placeholder="Password" />
-        <ForgotPassword href="#">Forgot Password?</ForgotPassword>
-        <Button>Login</Button>
+        <form onSubmit={handleSubmit}>
+          <Input type="email" name = {"Email"}placeholder="Email" value={formData.Email} onChange={handleChange} error = {errors.email}/>
+          {errors.email && <span className="error">{errors.email}</span>}
+          <Input type="password" name = {"Password"} placeholder="Password" value ={formData.Password} onChange={handleChange}/>
+          
+          {errors.api && <span className="error">{errors.api}</span>}
+
+          <ForgotPassword href="#">Forgot Password?</ForgotPassword>
+          <Button type= "submit">Login</Button>
+        </form>
       </RightContent>
 
       {/* AI Particles */}

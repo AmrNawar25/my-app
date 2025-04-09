@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { analyzeXray } from "../utils/uploadPageUtils"
+
 import {
   UploadContainer,
   UploadCard,
@@ -15,6 +17,7 @@ import { FaUpload, FaCheckCircle, FaExclamationTriangle, FaRedo } from "react-ic
 
 const PatientUpload = () => {
   const [selectedImage, setSelectedImage] = useState(null);
+  const [uploadedImage, setUploadedImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [result, setResult] = useState(null);
@@ -23,22 +26,36 @@ const PatientUpload = () => {
     const file = e.target.files[0];
     if (file) {
       setSelectedImage(URL.createObjectURL(file));
+      setUploadedImage(file);
       setError(null);
       setResult(null);
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async  () => {
     if (!selectedImage) {
       setError("Please upload an image first.");
       return;
     }
     setLoading(true);
     setError(null);
-    setTimeout(() => {
+
+    try {
+      // Call API
+      const { predicted_disease, impression, recommendation } = await analyzeXray(uploadedImage); 
+      
+      // Format and set result
+      setResult({
+        disease : predicted_disease,
+        impression : impression,
+        recommendation:recommendation
+      });
+    } catch (err) {
+      setError("Analysis failed. Please try again.");
+      console.error(err);
+    } finally {
       setLoading(false);
-      setResult("Possible fracture detected.");
-    }, 3000);
+    }
   };
 
   const handleReset = () => {
@@ -87,9 +104,20 @@ const PatientUpload = () => {
         </UploadButton>
 
         {result && (
-          <ResultText style={{ color: result.includes("fracture") ? "red" : "green" }}>
-            <FaCheckCircle style={{ marginRight: "6px" }} />
-            {result}
+          <ResultText style={{ color: result.disease ? "red" : "green" }}>
+          <FaCheckCircle style={{ marginRight: "6px" }} />
+          Diagnosis: {result.disease}
+          
+          {result.impression && (
+            <div style={{ marginTop: "1rem", fontSize: "0.9rem" }}>
+            Impression: {result.impression}
+            </div>
+          )}
+          {result.recommendation && (
+            <div style={{ marginTop: "0.5rem", fontSize: "0.9rem" }}>
+            Recommendation: {result.recommendation}
+            </div>
+          )}
           </ResultText>
         )}
 
