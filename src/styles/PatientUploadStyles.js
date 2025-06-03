@@ -7,11 +7,13 @@ const spin = keyframes`
 `;
 
 export const UploadContainer = styled.div`
-  height: 100vh;
+  min-height: 100vh;  // Changed from height to min-height
   background: linear-gradient(135deg, black, #c99833);
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 20px;  // Add some padding
+  box-sizing: border-box;  // Ensure padding is included in height calculation
 `;
 
 export const UploadCard = styled.div`
@@ -22,6 +24,7 @@ export const UploadCard = styled.div`
   border-radius: 20px;
   width: 100%;
   max-width: 550px;
+  min-height: 250px;  // Add minimum height
   text-align: center;
   box-shadow: 0 0 15px rgba(201, 152, 51, 0.4);
   overflow: hidden;
@@ -53,13 +56,14 @@ export const Label = styled.label`
 
 export const PreviewImage = styled.img`
   margin-top: 20px;
-  max-width: 100%;
+  max-width: 50%;
   border-radius: 12px;
   border: 1px solid #c99833;
 `;
 
 export const UploadButton = styled.button`
   margin-top: 25px;
+  margin-left: 5px;
   background: transparent;
   color: #c99833;
   padding: 12px 24px;
@@ -92,14 +96,14 @@ export const Loader = styled.div`
 
 export const ResultText = styled.p`
   margin-top: 20px;
-  color: #4caf50;
+  color: white;
   font-weight: bold;
   font-size: 1.1rem;
 `;
 
 export const ErrorText = styled.p`
   margin-top: 20px;
-  color: #e74c3c;
+  color: red;
   font-weight: bold;
   font-size: 1.1rem;
 `;

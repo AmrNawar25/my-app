@@ -104,7 +104,7 @@ const PatientUpload = () => {
         </UploadButton>
 
         {result && (
-          <ResultText style={{ color: result.disease ? "red" : "green" }}>
+          <ResultText style={{ color: result.disease ? "white" : "green" }}>
           <FaCheckCircle style={{ marginRight: "6px" }} />
           Diagnosis: {result.disease}
           
