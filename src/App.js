@@ -10,6 +10,9 @@ import SignupPage from "./components/SignUpPage";
 import LoginPage from "./components/LoginPage";
 import PatientUpload from "./components/PatientUpload";
 import PatientDashboard from "./components/PatientDashboard";
+import AboutPage from "./components/AboutPage";
+import ServicesPage from "./components/ServicesPage";
+
 
 const AppContent = () => {
   const location = useLocation();
@@ -19,6 +22,8 @@ const AppContent = () => {
       {!location.pathname.includes('/dashboard') && <Navbar />}
       <Routes>
         <Route path="/" element={<Home />} />
+          <Route path="/about" element={<AboutPage />} />
+        <Route path="/services" element={<ServicesPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/patient-upload" element={<PatientUpload />} />
