@@ -74,12 +74,7 @@ const SignUpPage = () => {
         <StyledButton type="submit">Create Account</StyledButton>
         </form>
         <div className="divider">
-          <span>or</span>
         </div>
-        <SocialButtons>
-          <button className="facebook">Sign up with Facebook</button>
-          <button className="google">Sign up with Google</button>
-        </SocialButtons>
       </FormContainer>
     </SignUpContainer>
   );

@@ -24,7 +24,7 @@ const Navbar = () => {
   const currentPath = location.pathname;
 
   // 🔒 Simulated login state - Replace this with real auth logic later
-  const isLoggedIn = true; // ← Change to `true` for testing manually
+  const isLoggedIn = false; // ← Change to `true` for testing manually
 
   return (
     <Nav>

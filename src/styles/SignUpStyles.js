@@ -63,7 +63,7 @@ export const ArtImage = styled.img`
 export const FormContainer = styled.div`
   width: 50%;
   background: white;
-  padding: 50px;
+  padding: 35px;
   border-radius: 15px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   text-align: center;
@@ -76,7 +76,7 @@ export const FormContainer = styled.div`
   h2 {
     font-size: 1.8rem;
     color: #c99833;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
   }
 
   p {
@@ -93,7 +93,7 @@ export const FormContainer = styled.div`
 
   .input-group {
     display: flex;
-    gap: 10px;
+    gap: 15px;
 
     @media (max-width: 768px) {
       flex-direction: column;
@@ -117,12 +117,13 @@ export const FormContainer = styled.div`
 
 // 🌟 Input Fields
 export const InputField = styled.input`
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
+  width: 93.2%;
+  padding: 12px 15px;
+  margin: 8px 0;
   border: 1px solid #c99833;
   border-radius: 5px;
   font-size: 1rem;
+  transition: all 0.3s ease;
 `;
 
 // 🌟 Button
@@ -142,43 +143,6 @@ export const StyledButton = styled.button`
     transform: scale(1.05);
   }
 `;
-
-// 🌟 Social Buttons
-export const SocialButtons = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-
-  button {
-    padding: 10px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    width: 100%;
-    transition: 0.3s;
-  }
-
-  .facebook {
-    background: #4267b2;
-    color: white;
-  }
-
-  .facebook:hover {
-    background: #365899;
-  }
-
-  .google {
-    background: white;
-    color: #333;
-    border: 1px solid #ccc;
-  }
-
-  .google:hover {
-    background: #f1f1f1;
-  }
-`;
-
 // 🌟 AI Particles Container
 export const ParticlesContainer = styled.div`
   position: absolute;
