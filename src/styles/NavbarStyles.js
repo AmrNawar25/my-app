@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 // Navbar Container
 export const Nav = styled.nav`
@@ -21,7 +22,6 @@ export const NavLogo = styled.div`
   font-weight: bold;
   color: #c99833;
   cursor: pointer;
-  
 `;
 
 // Links Container
@@ -31,9 +31,10 @@ export const NavLinks = styled.div`
 `;
 
 // Individual Nav Item
-export const NavItem = styled.a`
+export const NavItem = styled(Link)`
   text-decoration: none;
-  color: white;
+  color: ${({ active }) => (active ? "black" : "white")};
+  background: ${({ active }) => (active ? "#c99833" : "transparent")};
   font-size: 1rem;
   font-weight: 500;
   transition: 0.3s ease-in-out;

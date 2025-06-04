@@ -15,63 +15,30 @@ export const PageContainer = styled.div`
   margin: 0;
 `;
 
-export const HomeButtonWrapper = styled.div`
-  position: absolute;
-  top: 20px;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  z-index: 1000;
-`;
-
-export const HomeButton = styled.button`
-  background: linear-gradient(135deg, ${goldDark} 0%, ${goldLight} 100%);
-  color: ${darkBg};
-  border: none;
-  padding: 10px 30px;
-  font-size: 1.3rem;
-  font-weight: bold;
-  border-radius: 30px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
-  
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
-  }
-`;
-
 export const DashboardContainer = styled.div`
   background: ${darkBg};
-  padding: 0rem;
   padding-top: 100px;
   margin: 0 auto;
   min-height: 100vh;
-  width: 100%;
+  width: 90%;
   max-width: 1400px;
   font-family: 'Montserrat', sans-serif;
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 2rem;
+  display: flex;           /* Changed from grid to flex */
+  flex-direction: column;  /* Vertical layout */
 `;
 
 export const UserInfoSection = styled.section`
   background: ${cardBg};
   border-radius: 12px;
   padding: 2rem;
-  height: fit-content;
-  position: sticky;
-  top: 120px;
+  margin-bottom: 2rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 `;
 
 export const ReportsSection = styled.section`
   background: ${darkBg};
   border-radius: 12px;
+  flex-grow: 1; /* Make it take remaining vertical space */
 `;
 
 export const DashboardHeader = styled.div`
@@ -178,6 +145,27 @@ export const SectionTitle = styled.h3`
   }
 `;
 
+export const UploadReportWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const UploadReportButton = styled.button`
+  background-color: #2980b9;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+
+  &:hover {
+    background-color: #2471a3;
+  }
+`;
+
 export const ReportsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -218,28 +206,56 @@ export const ReportMeta = styled.div`
   color: rgba(245, 245, 245, 0.7);
   font-size: 0.85rem;
 `;
-
 export const ViewReportButton = styled.button`
-  background: ${props => props.status === 'Pending' 
-    ? `linear-gradient(135deg, #F5CE42 0%, #FFD700 100%)` 
-    : `linear-gradient(135deg, ${goldDark} 0%, ${goldAccent} 100%)`};
-  color: ${darkBg};
+  background-color: ${props => 
+    props.status === 'Pending' ? '#7f8c8d' : '#27ae60'};
+  color: white;
   border: none;
-  padding: 0.7rem 1rem;
-  border-radius: 8px;
-  cursor: ${props => props.status === 'Pending' ? 'not-allowed' : 'pointer'};
-  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s;
   width: 100%;
   margin-top: 1rem;
-  transition: all 0.3s;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 0.9rem;
 
   &:hover {
-    transform: ${props => props.status === 'Pending' ? 'none' : 'translateY(-2px)'};
-    box-shadow: ${props => props.status === 'Pending' 
-      ? 'none' 
-      : '0 4px 12px rgba(212, 175, 55, 0.4)'};
+    background-color: ${props => 
+      props.status === 'Pending' ? '#95a5a6' : '#2ecc71'};
+    transform: ${props => 
+      props.status === 'Pending' ? 'none' : 'translateY(-2px)'};
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+`;
+
+export const LogoutWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+  padding: 2rem 0;
+`;
+
+export const LogoutButton = styled.button`
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: white;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(231, 76, 60, 0.3);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 `;

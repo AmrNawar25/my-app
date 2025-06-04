@@ -10,6 +10,7 @@ import {
   TechGrid,
   TechItem,
   Divider,
+  CustomList,
 } from "../styles/AboutPageStyles";
 
 const sectionVariants = {
@@ -38,8 +39,8 @@ const AboutPage = () => {
           chest X-ray interpretations, especially in underserved regions and for elderly patients.
         </Paragraph>
       </motion.section>
-      
-        <Divider />
+
+      <Divider />
 
       <motion.section
         variants={sectionVariants}
@@ -56,7 +57,7 @@ const AboutPage = () => {
         </Paragraph>
       </motion.section>
 
-        <Divider />
+      <Divider />
 
       <motion.section
         variants={sectionVariants}
@@ -67,14 +68,14 @@ const AboutPage = () => {
       >
         <Title>Technology Stack</Title>
         <TechGrid>
-          <TechItem>🧠 DenseNet-121</TechItem>
-          <TechItem>💬 KevinLlama-7B</TechItem>
-          <TechItem>⚛️ React + Tailwind CSS</TechItem>
-          <TechItem>🔒 HIPAA-Compliant Backend</TechItem>
+          <TechItem>DenseNet-121</TechItem>
+          <TechItem>KevinLlama-7B</TechItem>
+          <TechItem>React + Tailwind CSS</TechItem>
+          <TechItem>HIPAA-Compliant Backend</TechItem>
         </TechGrid>
       </motion.section>
-      
-        <Divider />
+
+      <Divider />
 
       <motion.section
         variants={sectionVariants}
@@ -91,7 +92,7 @@ const AboutPage = () => {
         </Paragraph>
       </motion.section>
 
-        <Divider />
+      <Divider />
 
       <motion.section
         variants={sectionVariants}
@@ -104,15 +105,15 @@ const AboutPage = () => {
         <Paragraph>
           Unlike traditional tools that focus only on classification, Horus Vision offers:
         </Paragraph>
-        <ul>
+        <CustomList>
           <li>Full medical report generation using NLP</li>
           <li>Editable reports by doctors before finalization</li>
           <li>Support for both DICOM and PNG formats</li>
           <li>Bilingual and elderly-friendly interface</li>
-        </ul>
+        </CustomList>
       </motion.section>
 
-        <Divider />
+      <Divider />
 
       <motion.section
         variants={sectionVariants}
@@ -122,14 +123,14 @@ const AboutPage = () => {
         as={Section}
       >
         <Title>Project Achievements</Title>
-        <Paragraph>
-          - 🚀 <strong>91% classification accuracy</strong> on NIH ChestX-ray dataset<br />
-          - ⚡ Report generation in <strong>under 5 seconds</strong><br />
-          - 📋 Compliance with <strong>IEEE, HIPAA, and WHO ethical standards</strong>
-        </Paragraph>
+        <CustomList>
+          <li><strong>91% classification accuracy</strong> on NIH ChestX-ray dataset</li>
+          <li>Report generation in <strong>under 5 seconds</strong></li>
+          <li>Compliance with <strong>IEEE, HIPAA, and WHO ethical standards</strong></li>
+        </CustomList>
       </motion.section>
 
-        <Divider />
+      <Divider />
 
       <motion.section
         variants={sectionVariants}
@@ -144,7 +145,8 @@ const AboutPage = () => {
           we chose this name to reflect our AI’s goal: providing clear, reliable vision into patients' health through X-ray analysis.
         </Paragraph>
       </motion.section>
-        <Divider />
+
+      <Divider />
 
       <motion.section
         variants={sectionVariants}
@@ -159,16 +161,8 @@ const AboutPage = () => {
           and adopt federated learning to ensure maximum patient data privacy across hospitals.
         </Paragraph>
       </motion.section>
-
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 1 }}
-      >
-      </motion.div>
     </AboutContainer>
   );
 };
 
 export default AboutPage;
- 

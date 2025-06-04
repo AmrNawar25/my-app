@@ -4,7 +4,8 @@ import { Nav, NavLogo, NavLinks, NavItem } from "../styles/NavbarStyles";
 import styled from "styled-components";
 
 const Button = styled(Link)`
-  color: white;
+  color: ${({ active }) => (active ? "black" : "white")};
+  background: ${({ active }) => (active ? "#c99833" : "transparent")};
   padding: 10px 15px;
   border-radius: 5px;
   font-size: 1rem;
@@ -13,24 +14,36 @@ const Button = styled(Link)`
   transition: 0.3s ease-in-out;
 
   &:hover {
-    background: white;
+    background: #c99833;
     color: black;
   }
 `;
 
 const Navbar = () => {
-  const location = useLocation(); // Get current page
+  const location = useLocation();
+  const currentPath = location.pathname;
+
+  // 🔒 Simulated login state - Replace this with real auth logic later
+  const isLoggedIn = true; // ← Change to `true` for testing manually
 
   return (
     <Nav>
       <NavLogo>HorusVision</NavLogo>
       <NavLinks>
-        <NavItem as={Link} to="/">Home</NavItem>
-        <NavItem as={Link} to="/about">About</NavItem>
-        <NavItem as={Link} to="/services">Services</NavItem>
-        {/* Hide Signup button on Signup page, Hide Login button on Login page */}
-        {location.pathname !== "/signup" && <Button to="/signup">Signup</Button>}
-        {location.pathname !== "/login" && <Button to="/login">Login</Button>}
+        <NavItem to="/" active={currentPath === "/"}>Home</NavItem>
+        <NavItem to="/about" active={currentPath === "/about"}>About</NavItem>
+
+        {/* Show Dashboard only when logged in */}
+        {isLoggedIn && (
+          <NavItem to="/dashboard" active={currentPath === "/dashboard"}>Dashboard</NavItem>
+        )}
+
+        {!isLoggedIn && currentPath !== "/signup" && (
+          <Button to="/signup" active={currentPath === "/signup"}>Signup</Button>
+        )}
+        {!isLoggedIn && currentPath !== "/login" && (
+          <Button to="/login" active={currentPath === "/login"}>Login</Button>
+        )}
       </NavLinks>
     </Nav>
   );

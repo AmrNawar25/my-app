@@ -41,6 +41,18 @@ export const Highlight = styled.span`
     0 0 10px #d4af37cc;
 `;
 
+export const HighlightLink = styled.a`
+  color: #d4af37;
+  font-weight: bold;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+`;
+
 export const TechGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -85,47 +97,32 @@ export const Divider = styled.hr`
     #d4af37,
     transparent
   );
-  box-shadow:
-    0 0 20px #ffd54f88;
+  box-shadow: 0 0 20px #ffd54f88;
   border-radius: 10px;
 `;
 
-// Custom bullet list style for unique check marks
+// 🎯 New Stylish List
 export const CustomList = styled.ul`
   list-style: none;
-  padding-left: 1rem;
+  padding-left: 0;
   color: #ddd;
   font-size: 1.1rem;
-  max-width: 680px;
+  max-width: 760px;
+  margin-top: 16px;
 
   li {
     position: relative;
-    margin-bottom: 12px;
-    padding-left: 30px;
-    line-height: 1.5;
+    margin-bottom: 16px;
+    padding: 12px 20px 12px 18px;
+    background: #1e1e1e;
+    border-left: 5px solid #ffd54f;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #ffd54f33;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 
-    &::before {
-      content: "✔";
-      position: absolute;
-      left: 0;
-      top: 2px;
-      color: #ffd54f;
-      font-weight: 700;
-      font-size: 1.3rem;
-      text-shadow:
-        0 0 5px #ffd54f88;
+    &:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 15px #ffd54f77, inset 0 0 8px #ffd54f55;
     }
   }
 `;
-export const HighlightLink = styled.a`
-  color: #d4af37;
-  font-weight: bold;
-  text-decoration: none;
-
-  &:hover,
-  &:focus {
-    text-decoration: underline;
-    cursor: pointer;
-  }
-`;
-
