@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import WelcomePage from "./components/WelcomePage";
 import HowItWorks from "./components/HowItWorks";
@@ -9,34 +9,39 @@ import ContactUs from "./components/ContactUs";
 import SignupPage from "./components/SignUpPage";
 import LoginPage from "./components/LoginPage";
 import PatientUpload from "./components/PatientUpload";
+import PatientDashboard from "./components/PatientDashboard";
 
-function App() {
+const AppContent = () => {
+  const location = useLocation();
+  
   return (
-    <Router>
-      <>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/PatientUpload" element={<PatientUpload />} />
-        </Routes>
-      </>
-    </Router>
+    <>
+      {!location.pathname.includes('/dashboard') && <Navbar />}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/patient-upload" element={<PatientUpload />} />
+        <Route path="/dashboard" element={<PatientDashboard />} />
+      </Routes>
+    </>
   );
-}
+};
 
-// Home page component (includes WelcomePage and all sections)
 const Home = () => (
   <>
     <WelcomePage />
     <HowItWorks />
     <XrayPage />
     <MeetTheTeam />
-    
     <ContactUs />
   </>
-  
 );
 
-export default App;
+export default function App() {
+  return (
+    <Router>
+      <AppContent />
+    </Router>
+  );
+}
