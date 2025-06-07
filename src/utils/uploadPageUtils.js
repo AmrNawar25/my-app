@@ -13,7 +13,7 @@ const analyzeXray = async (imageFile) => {
       throw new Error(errorData.message || 'Analysis failed');
     }
   
-    return await response.json(); // Returns { message, predicted_disease, generated_report }
+    return await response.json(); 
 };
 
 module.exports={

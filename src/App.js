@@ -11,6 +11,7 @@ import LoginPage from "./components/LoginPage";
 import PatientUpload from "./components/PatientUpload";
 import PatientDashboard from "./components/PatientDashboard";
 import AboutPage from "./components/AboutPage";
+import { UserProvider } from "./contexts/UserContext";
 
 
 const AppContent = () => {
@@ -21,7 +22,7 @@ const AppContent = () => {
       {!location.pathname.includes('/dashboard') && <Navbar />}
       <Routes>
         <Route path="/" element={<Home />} />
-          <Route path="/about" element={<AboutPage />} />
+        <Route path="/about" element={<AboutPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/patient-upload" element={<PatientUpload />} />
@@ -44,7 +45,9 @@ const Home = () => (
 export default function App() {
   return (
     <Router>
-      <AppContent />
+      <UserProvider>
+        <AppContent />
+      </UserProvider>
     </Router>
   );
 }

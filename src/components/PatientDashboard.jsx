@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect ,useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import {getUserData} from '../utils/UserUtils';
+
 import {
   PageContainer,
   DashboardContainer,
@@ -25,15 +27,52 @@ import {
   ReportMeta,
   ViewReportButton
 } from '../styles/PatientDashboardStyles';
+import { GetUserReports } from '../utils/ReportsUtils';
+
 
 const PatientDashboard = () => {
   const navigate = useNavigate();
-
+  const [userData, setUserData] = React.useState(null);
+  const [userReports, setUserReports] = useState([]);
   const handleLogout = () => {
     console.log('Logging out...');
     navigate('/login');
   };
 
+  
+
+  const userId = "67c1b52b3013af18a43e4f65"
+
+  useEffect(() => {
+    if (!userId){
+      navigate('/login');
+      return;
+    }
+
+    getUserData(userId)
+      .then(data => {
+        console.log('User data fetched:', data);
+        setUserData(data);
+      })
+      .catch(error => {
+        console.error('Error fetching user data:', error);
+        navigate('/login');
+      });
+
+    GetUserReports(userId)
+      .then(reports => { 
+        console.log('User reports fetched:', reports);
+        setUserReports(reports);
+      })
+      .catch(error => { 
+        console.error('Error fetching user reports:', error);
+      });
+      
+  }, [userId, navigate]);
+
+  if (!userData || userReports.length === 0) {
+    return <div>Loading...</div>; // or a loading spinner
+  }
   return (
     <>
       <Navbar />
@@ -42,7 +81,7 @@ const PatientDashboard = () => {
         <DashboardContainer>
           <UserInfoSection>
             <DashboardHeader>
-              <PatientName>Mrs. Christina</PatientName>
+              <PatientName>{userData.FirstName}</PatientName>
               <EditButton>Edit</EditButton>
             </DashboardHeader>
 
@@ -57,7 +96,7 @@ const PatientDashboard = () => {
               </InfoCard>
               <InfoCard>
                 <InfoLabel>Email</InfoLabel>
-                <InfoValue>Christina22@gmail.com</InfoValue>
+                <InfoValue>{userData.Email}</InfoValue>
               </InfoCard>
               <InfoCard>
                 <InfoLabel>Gender</InfoLabel>
@@ -75,37 +114,18 @@ const PatientDashboard = () => {
             </UploadReportWrapper>
 
             <ReportsGrid>
-              <ReportCard status="Completed">
-                <ReportHeader>
-                  <ReportTitle>Report 1</ReportTitle>
-                  <ReportMeta>10:30 PM • 27/1/2024</ReportMeta>
-                </ReportHeader>
-                <ViewReportButton status="Completed">View Report</ViewReportButton>
-              </ReportCard>
 
-              <ReportCard status="Completed">
-                <ReportHeader>
-                  <ReportTitle>Report 2</ReportTitle>
-                  <ReportMeta>1:12 PM • 10/5/2024</ReportMeta>
-                </ReportHeader>
-                <ViewReportButton status="Completed">View Report</ViewReportButton>
-              </ReportCard>
-
-              <ReportCard status="Completed">
-                <ReportHeader>
-                  <ReportTitle>Report 3</ReportTitle>
-                  <ReportMeta>5:30 PM • 27/7/2024</ReportMeta>
-                </ReportHeader>
-                <ViewReportButton status="Completed">View Report</ViewReportButton>
-              </ReportCard>
-
-              <ReportCard status="Pending">
-                <ReportHeader>
-                  <ReportTitle>Report 4</ReportTitle>
-                  <ReportMeta>12:00 PM • 23/1/2025</ReportMeta>
-                </ReportHeader>
-                <ViewReportButton status="Pending">Pending</ViewReportButton>
-              </ReportCard>
+              {userReports.map((report,i) => (
+                <ReportCard status={report.Status} key={i}>
+                  <ReportHeader>
+                    <ReportTitle>{`Report ${i+1}`}</ReportTitle>
+                    <ReportMeta>{report.ReportDate}</ReportMeta>
+                  </ReportHeader>
+                  <ViewReportButton status={report.Status}>
+                    {report.Status === 'Pending' ? 'Pending' : 'View Report'}
+                  </ViewReportButton>
+                </ReportCard>
+              ))}
             </ReportsGrid>
           </ReportsSection>
 
