@@ -12,6 +12,8 @@ import PatientUpload from "./components/PatientUpload";
 import PatientDashboard from "./components/PatientDashboard";
 import AboutPage from "./components/AboutPage";
 import { UserProvider } from "./contexts/UserContext";
+import DoctorDashboard from "./components/DoctorDashboard";
+
 
 
 const AppContent = () => {
@@ -27,6 +29,7 @@ const AppContent = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/patient-upload" element={<PatientUpload />} />
         <Route path="/dashboard" element={<PatientDashboard />} />
+        <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
       </Routes>
     </>
   );
