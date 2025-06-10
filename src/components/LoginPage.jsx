@@ -13,8 +13,7 @@ import {
   Particle,
   Line,
 } from "../styles/LoginPageStyles";
-import eyeImage from "../assets/welcome-image.png"; // Ensure this path is correct
-
+import Image1 from "../assets/Image1.png"; // Importing the eye image
 const LoginPage = () => {
   const navigate = useNavigate();
 
@@ -65,7 +64,7 @@ const LoginPage = () => {
     <Container>
       {/* Left Side - Eye Image Animation */}
       <LeftContent>
-        <EyeImage src={eyeImage} alt="Eye Animation" />
+        <EyeImage src={Image1} alt="Eye Animation" />
       </LeftContent>
 
       {/* Right Side - Login Form */}

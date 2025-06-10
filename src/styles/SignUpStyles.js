@@ -56,6 +56,8 @@ export const LeftPanel = styled.div`
 // 🌟 Animated Image (Eye)
 export const ArtImage = styled.img`
   max-width: 100%;
+  margin-right: 8rem;
+
   height: auto;
 `;
 

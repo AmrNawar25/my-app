@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
-import WelcomeImage from "../assets/welcome-image.png"; 
+import Image1 from "../assets/Image1.png"; // Importing the eye image
 import { 
   Container, 
   LeftContent, 
@@ -79,7 +79,7 @@ const WelcomePage = () => {
 
       {/* Right Side Image */}
       <RightContent>
-        <EyeImage src={WelcomeImage} alt="Welcome Design" />
+        <EyeImage src={Image1} alt="Welcome Design" />
       </RightContent>
     </Container>
   );

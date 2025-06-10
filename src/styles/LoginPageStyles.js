@@ -45,6 +45,7 @@ export const LeftContent = styled.div`
 export const EyeImage = styled.img`
   max-width: 100%;
   height: auto;
+  margin-right: 9rem;
 `;
 
 // Right Side (Login Form Section)

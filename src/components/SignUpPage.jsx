@@ -8,9 +8,10 @@ import {
   LeftPanel,
   ArtImage,
 } from "../styles/SignUpStyles";
-import eyeImage from "../assets/welcome-image.png";
 import { validateEmail, validatePassword, registerUser } from "../utils/AuthUtils";
 import { useNavigate } from "react-router-dom";
+import Image1 from "../assets/Image1.png"; // Importing the eye image
+
 
 const SignUpPage = () => {
   const [formData, setFormData] = useState({
@@ -77,7 +78,7 @@ const SignUpPage = () => {
       }}
     >
       <LeftPanel>
-        <ArtImage src={eyeImage} alt="Artistic Eye" />
+        <ArtImage src={Image1} alt="Artistic Eye" />
       </LeftPanel>
       <FormContainer>
         <form onSubmit={handelSubmit}>
