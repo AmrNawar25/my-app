@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { useUser } from "../contexts/UserContext";
+import {getDoctorData, getDoctorReportStatus , getDoctorWeeklyStatus} from "../utils/UserUtils";
+import {GetDoctorReports ,EditReport } from "../utils/ReportsUtils";
+
 import {
   DashboardContainer,
   Sidebar,
@@ -32,7 +36,7 @@ import {
 
 import { Line } from "react-chartjs-2";
 import { useNavigate } from "react-router-dom";
-import XrayImage from "../assets/1.png";
+// import XrayImage from "../assets/1.png";
 
 ChartJS.register(
   CategoryScale,
@@ -44,61 +48,80 @@ ChartJS.register(
   Legend
 );
 
-// Mock API call to fetch doctor personal data
-const getDoctorData = () =>
-  new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        FirstName: "Neutron",
-        LastName: "Smith",
-        Email: "neutron.smith@hospital.com",
-        Phone: "+1234567890",
-        Birthdate: "1980-08-12",
-        Gender: "Male",
-      });
-    }, 500);
-  });
-
 const DoctorDashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [activeMenu, setActiveMenu] = useState("reports"); // "reports", "charts", "settings"
+  const [activeMenu, setActiveMenu] = useState("reports"); 
   const [doctorData, setDoctorData] = useState(null);
+  const { userId , logout } = useUser();
   const navigate = useNavigate();
 
-  // Pending reports data - replace with API call if you have backend
-  const [pendingReports, setPendingReports] = useState([
-    {
-      id: "r1",
-      patientName: "Sarah Connor",
-      diseaseName: "Neural Degeneration",
-      aiAnalysis:
-        "CT Scan shows early signs of neural degeneration. Recommend further testing.",
-    },
-    {
-      id: "r2",
-      patientName: "John Doe",
-      diseaseName: "Brain MRI Clean",
-      aiAnalysis:
-        "MRI clean. No abnormalities found. Scheduled for a 6-month follow-up.",
-    },
-    {
-      id: "r3",
-      patientName: "Jane Smith",
-      diseaseName: "Frontal Lobe Anomaly",
-      aiAnalysis:
-        "Detected anomaly in the frontal lobe. Recommend AI cross-validation.",
-    },
-  ]);
+  const [pendingReports, setPendingReports] = useState([]);
+
 
   const [selectedReport, setSelectedReport] = useState(null);
-  const [isImageExpanded, setIsImageExpanded] = useState(false); // <-- Added state for expanded image
+  const [isImageExpanded, setIsImageExpanded] = useState(false);
+
+  const [editReport, setEditReport] = useState(null);
+  const [editFields, setEditFields] = useState({fidings: "", impression: ""});
+
+  const [DoctorStatus , setDoctorStatus] = useState(null); 
+  const [reportsStatusData, setReportsStatusData] = useState();
 
   useEffect(() => {
-    getDoctorData().then((data) => setDoctorData(data));
-  }, []);
+    console.log("Fetching doctor data for userId:", userId);
+      if (!userId) {
+        navigate("/login");
+        return;
+      }
+
+    getDoctorData(userId)
+      .then((data) => {
+        console.log("Doctor data fetched:", data);
+        setDoctorData(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching doctor data:", error);
+        navigate("/login");
+      });
+
+    GetDoctorReports(userId)
+      .then((reports) => {
+        console.log("Doctor reports fetched:", reports);
+        setPendingReports(reports);
+      })
+      .catch((error) => {
+        console.error("Error fetching doctor reports:", error);
+      });
+
+    getDoctorReportStatus(userId)
+      .then((status) => {
+        console.log("Doctor report status fetched:", status);
+        setDoctorStatus(status);
+      })
+      .catch((error) => {
+        console.error("Error fetching doctor report status:", error);
+      });
+
+    getDoctorWeeklyStatus(userId)
+      .then((weeklyStatus) => {
+        console.log("Doctor weekly status fetched:", weeklyStatus);
+        setReportsStatusData(weeklyStatus);
+      })
+      .catch((error) => {
+        console.error("Error fetching doctor weekly status:", error);
+      });
+
+  }, [userId, navigate]);
+
+
+  if (!doctorData || !DoctorStatus || !reportsStatusData) {
+    return <div>Loading...</div>;
+  }
+
 
   const handleLogout = () => {
-    // clear auth here if needed
+    console.log("Logging out...");
+    logout();
     navigate("/login");
   };
 
@@ -112,51 +135,70 @@ const DoctorDashboard = () => {
 
   const closeReportModal = () => {
     setSelectedReport(null);
-    setIsImageExpanded(false); // Reset expanded image when modal closes
+    setIsImageExpanded(false); 
   };
 
-  const handleAcceptReport = () => {
-    alert(`Accepted report for ${selectedReport.patientName}`);
-    // TODO: Add backend call to accept report here
+  const handleAcceptReport = async () => {
+    alert(`Accepted report for ${selectedReport.UserId.FirstName} ${selectedReport.UserId.LastName}`);
+    setEditFields({
+      action: "accept",
+    })
+
+    try {
+      const response = await EditReport(selectedReport._id, editFields);
+      console.log(response);
+      if (response.status === 200) {
+        alert("Report accepted successfully!");
+        setPendingReports((prevReports) =>
+          prevReports.filter((report) => report._id !== selectedReport._id)
+        );
+      } else {
+        alert("Failed to accept report. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error accepting report:", error);
+      alert("An error occurred while accepting the report.");
+    }
     closeReportModal();
+    setSelectedReport(null);
   };
 
   const handleEditReport = () => {
-    alert(`Editing report for ${selectedReport.patientName}`);
-    // TODO: Add logic to edit report (navigate or open form)
-    closeReportModal();
+    setEditReport(selectedReport);
+    setEditFields({
+      action : "edit",
+      findings: selectedReport.Findings,
+      impression: selectedReport.Impression,
+    });
+    setSelectedReport(null);
   };
 
-  // Reports Status Over Time (Accepted, Edited, Rejected)
-  const reportsStatusData = {
-    labels: ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5", "Week 6"],
-    datasets: [
-      {
-        label: "Accepted",
-        data: [10, 14, 12, 15, 13, 17],
-        borderColor: "#c7973c",
-        backgroundColor: "rgba(199,151,60,0.3)",
-        fill: true,
-        tension: 0.3,
-      },
-      {
-        label: "Edited",
-        data: [4, 5, 3, 6, 4, 7],
-        borderColor: "#7c6236",
-        backgroundColor: "rgba(124,98,54,0.3)",
-        fill: true,
-        tension: 0.3,
-      },
-      {
-        label: "Rejected",
-        data: [1, 2, 1, 2, 1, 3],
-        borderColor: "#b03a2e",
-        backgroundColor: "rgba(176,58,46,0.3)",
-        fill: true,
-        tension: 0.3,
-      },
-    ],
-  };
+  const handleSaveEdit = async () => {
+    if ((!editFields.findings || !editFields.impression) && editFields.action === "edit") {
+      alert("Please fill in all fields before saving.");
+      return;
+    }
+
+    try {
+      const response = await EditReport(editReport._id ,editFields)
+      console.log(response)
+
+      if (response.status === 200) {
+        alert("Report updated successfully!");
+        setEditReport(null);
+        setPendingReports((prevReports) =>
+          prevReports.filter((report) => report._id !== editReport._id)
+        );
+      } else {
+        alert("Failed to update report. Please try again.");
+      }
+    }
+    catch (error) {
+      console.error("Error updating report:", error);
+      alert("An error occurred while updating the report.");
+    }
+  }
+
 
   const reportsStatusOptions = {
     responsive: true,
@@ -199,7 +241,7 @@ const DoctorDashboard = () => {
           <>
             <ProfileSection>
               <DoctorIcon />
-              <h3>Dr. Neutron</h3>
+              <h3>Dr. {`${doctorData.FirstName} ${doctorData.LastName}`}</h3>
             </ProfileSection>
 
             <SidebarMenu>
@@ -218,13 +260,14 @@ const DoctorDashboard = () => {
       </Sidebar>
 
       <MainContent $sidebarOpen={sidebarOpen}>
-        <h2>Welcome back, Dr. Neutron 👋</h2>
-
+        <h2>Welcome back, Dr. {`${doctorData.FirstName} ${doctorData.LastName}`} 👋</h2>
+        {console.log("Doctor Status:", DoctorStatus)}
         {activeMenu === "reports" && (
+
           <>
             <Cards>
-              <Card>🧠 124 Scans Analyzed</Card>
-              <Card>📊 8 New Reports</Card>
+              <Card>{`🧠 ${String(DoctorStatus.analyzed ?? 0 )} Scans Analyzed`}</Card>
+              <Card>{`📊 ${String(DoctorStatus.pending ?? 0 )} New Reports`}</Card>
             </Cards>
 
             <ReportsSection>
@@ -234,12 +277,12 @@ const DoctorDashboard = () => {
 
               {pendingReports.map((report) => (
                 <ReportCard
-                  key={report.id}
+                  key={report._id}
                   status="Pending"
                   style={{ marginBottom: "15px" }}
                 >
-                  <ReportTitle>{report.patientName}</ReportTitle>
-                  <ReportDetails>{report.diseaseName}</ReportDetails>
+                  <ReportTitle>{`${report.UserId.FirstName} ${report.UserId.LastName}`}</ReportTitle>
+                  <ReportDetails>{report.Findings}</ReportDetails>
                   <button
                     onClick={() => openReportModal(report)}
                     style={{
@@ -288,7 +331,7 @@ const DoctorDashboard = () => {
                     }}
                   >
                     <h3>
-                      {selectedReport.patientName} - {selectedReport.diseaseName}
+                      {selectedReport.UserId.FirstName} - {selectedReport.Findings}
                     </h3>
                     <p
                       style={{
@@ -300,12 +343,12 @@ const DoctorDashboard = () => {
                         minHeight: "100px",
                       }}
                     >
-                      {selectedReport.aiAnalysis}
+                      {selectedReport.Impression}
                     </p>
 
                     {/* Clickable X-ray image */}
                     <img
-                      src={XrayImage}
+                      src={`http://localhost:5000/${selectedReport.XrayImageId.ImageUrl}`}
                       alt="X-ray"
                       style={{
                         width: "100%",
@@ -374,6 +417,8 @@ const DoctorDashboard = () => {
                     </button>
                   </div>
 
+                  
+
                   {/* Expanded image overlay */}
                   {isImageExpanded && (
                     <div
@@ -392,8 +437,9 @@ const DoctorDashboard = () => {
                         cursor: "zoom-out",
                       }}
                     >
+                      {console.log("Expanded image URL:", selectedReport.XrayImageId.ImageUrl)}
                       <img
-                        src={XrayImage}
+                        src={`http://localhost:5000/${selectedReport.XrayImageId.ImageUrl}`}
                         alt="Expanded X-ray"
                         style={{
                           maxWidth: "90vw",
@@ -405,6 +451,99 @@ const DoctorDashboard = () => {
                       />
                     </div>
                   )}
+                </div>
+              )}
+
+              {editReport && (
+                <div
+                  onClick={() => setEditReport(null)}
+                  style={{
+                    position: "fixed",
+                    top: 0,
+                    left: 0,
+                    width: "100vw",
+                    height: "100vh",
+                    backgroundColor: "rgba(0,0,0,0.6)",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    zIndex: 1000,
+                  }}
+                >
+                  <div
+                    onClick={(e) => e.stopPropagation()}
+                    style={{
+                      backgroundColor: "#222",
+                      padding: "25px",
+                      borderRadius: "12px",
+                      width: "400px",
+                      color: "#c7973c",
+                      boxShadow: "0 0 15px #c7973c",
+                      position: "relative",
+                    }}
+                  >
+                    <h3>Edit Report</h3>
+                    <label style={{ color: "#eee" }}>Findings</label>
+                    <textarea
+                      value={editFields.findings}
+                      onChange={e => setEditFields({ ...editFields, findings: e.target.value })}
+                      style={{
+                        width: "100%",
+                        minHeight: "60px",
+                        marginBottom: "12px",
+                        borderRadius: "6px",
+                        border: "1px solid #c7973c",
+                        padding: "8px",
+                        background: "#333",
+                        color: "#fff"
+                      }}
+                    />
+                    <label style={{ color: "#eee" }}>Impression</label>
+                    <textarea
+                      value={editFields.impression}
+                      onChange={e => setEditFields({ ...editFields, impression: e.target.value })}
+                      style={{
+                        width: "100%",
+                        minHeight: "60px",
+                        marginBottom: "12px",
+                        borderRadius: "6px",
+                        border: "1px solid #c7973c",
+                        padding: "8px",
+                        background: "#333",
+                        color: "#fff"
+                      }}
+                    />
+                    <button
+                      onClick={handleSaveEdit}
+                      style={{
+                        backgroundColor: "#3a7c3a",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "6px",
+                        padding: "10px",
+                        fontWeight: "bold",
+                        cursor: "pointer",
+                        width: "100%",
+                        marginBottom: "10px"
+                      }}
+                    >
+                      Save
+                    </button>
+                    <button
+                      onClick={() => setEditReport(null)}
+                      style={{
+                        backgroundColor: "#555",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "6px",
+                        padding: "8px 14px",
+                        cursor: "pointer",
+                        width: "100%",
+                      }}
+                    >
+                      Cancel
+                    </button>
+                  </div>
                 </div>
               )}
             </ReportsSection>

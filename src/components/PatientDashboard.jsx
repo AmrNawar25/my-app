@@ -27,23 +27,25 @@ import {
   ReportMeta,
   ViewReportButton
 } from '../styles/PatientDashboardStyles';
-import { GetUserReports } from '../utils/ReportsUtils';
-
+import { GetUserReports , handleDownloadReport} from '../utils/ReportsUtils';
+import { useUser } from '../contexts/UserContext';
 
 const PatientDashboard = () => {
   const navigate = useNavigate();
   const [userData, setUserData] = React.useState(null);
   const [userReports, setUserReports] = useState([]);
+  const { userId , logout } = useUser();
+  
   const handleLogout = () => {
     console.log('Logging out...');
+    logout(); 
     navigate('/login');
   };
 
   
-
-  const userId = "67c1b52b3013af18a43e4f65"
-
   useEffect(() => {
+
+    console.log('Fetching user data for userId:', userId);
     if (!userId){
       navigate('/login');
       return;
@@ -70,9 +72,11 @@ const PatientDashboard = () => {
       
   }, [userId, navigate]);
 
-  if (!userData || userReports.length === 0) {
+  if (!userData) {
     return <div>Loading...</div>; // or a loading spinner
   }
+
+
   return (
     <>
       <Navbar />
@@ -88,11 +92,11 @@ const PatientDashboard = () => {
             <PatientInfoGrid>
               <InfoCard>
                 <InfoLabel>Birthdate</InfoLabel>
-                <InfoValue>25/5/1976</InfoValue>
+                <InfoValue>{userData.Birthdate}</InfoValue>
               </InfoCard>
               <InfoCard>
                 <InfoLabel>Phone Number</InfoLabel>
-                <InfoValue>0123456789</InfoValue>
+                <InfoValue>{userData.Phone}</InfoValue>
               </InfoCard>
               <InfoCard>
                 <InfoLabel>Email</InfoLabel>
@@ -100,7 +104,7 @@ const PatientDashboard = () => {
               </InfoCard>
               <InfoCard>
                 <InfoLabel>Gender</InfoLabel>
-                <InfoValue>Female</InfoValue>
+                <InfoValue>{userData.Gender}</InfoValue>
               </InfoCard>
             </PatientInfoGrid>
           </UserInfoSection>
@@ -114,18 +118,23 @@ const PatientDashboard = () => {
             </UploadReportWrapper>
 
             <ReportsGrid>
-
-              {userReports.map((report,i) => (
-                <ReportCard status={report.Status} key={i}>
-                  <ReportHeader>
-                    <ReportTitle>{`Report ${i+1}`}</ReportTitle>
-                    <ReportMeta>{report.ReportDate}</ReportMeta>
-                  </ReportHeader>
-                  <ViewReportButton status={report.Status}>
-                    {report.Status === 'Pending' ? 'Pending' : 'View Report'}
-                  </ViewReportButton>
-                </ReportCard>
-              ))}
+              {
+                userReports.length === 0 ? (
+                  <h2>No reports available</h2>
+                ) : (
+                  userReports.map((report, i) => (
+                    <ReportCard status={report.Status} key={i}>
+                      <ReportHeader>
+                        <ReportTitle>{`Report ${i + 1}`}</ReportTitle>
+                        <ReportMeta>{report.ReportDate}</ReportMeta>
+                      </ReportHeader>
+                      <ViewReportButton status={report.Status} disabled={report.Status === 'Pending'} onClick={() => handleDownloadReport(report , userData)}>
+                        {report.Status === 'Pending' ? 'Pending' : 'View Report'}
+                      </ViewReportButton>
+                    </ReportCard>
+                  ))
+                )
+              }
             </ReportsGrid>
           </ReportsSection>
 

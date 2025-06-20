@@ -3,6 +3,10 @@ import { Link, useLocation } from "react-router-dom";
 import { Nav, NavLogo, NavLinks, NavItem } from "../styles/NavbarStyles";
 import styled from "styled-components";
 
+import { useUser } from "../contexts/UserContext";
+import { nav } from "framer-motion/client";
+import { useNavigate } from "react-router-dom";
+
 const Button = styled(Link)`
   color: ${({ active }) => (active ? "black" : "white")};
   background: ${({ active }) => (active ? "#c99833" : "transparent")};
@@ -22,10 +26,20 @@ const Button = styled(Link)`
 const Navbar = () => {
   const location = useLocation();
   const currentPath = location.pathname;
+  const navigate = useNavigate();
 
   // 🔒 Simulated login state - Replace this with real auth logic later
-  const isLoggedIn = false; // ← Change to `true` for testing manually
+  const {isLoggedIn , UserRole} = useUser(); // ← Change to `true` for testing manually
 
+  const handleDashboardClick = (e) => {
+    e.preventDefault()
+    if (UserRole === "Doctor") {
+      navigate("/doctor-dashboard");
+    }
+    else if (UserRole === "Patient") {
+      navigate("/patient-dashboard");
+    }
+  }
   return (
     <Nav>
       <NavLogo>HorusVision</NavLogo>
@@ -35,7 +49,7 @@ const Navbar = () => {
 
         {/* Show Dashboard only when logged in */}
         {isLoggedIn && (
-          <NavItem to="/dashboard" active={currentPath === "/dashboard"}>Dashboard</NavItem>
+          <NavItem to="#" onClick={handleDashboardClick} active={currentPath.includes("dashboard")}>Dashboard</NavItem>
         )}
 
         {!isLoggedIn && currentPath !== "/signup" && (

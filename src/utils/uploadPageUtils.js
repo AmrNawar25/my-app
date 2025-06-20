@@ -1,9 +1,9 @@
 // src/utils/api/xrayAPI.js
-const analyzeXray = async (imageFile) => {
+const analyzeXray = async (imageFile , userId) => {
     const formData = new FormData();
     formData.append('file', imageFile);
   
-    const response = await fetch('http://localhost:5000/api/model/process_image', {
+    const response = await fetch(`http://localhost:5000/api/model/process_image/${userId}`, {
       method: 'POST',
       body: formData,
     });

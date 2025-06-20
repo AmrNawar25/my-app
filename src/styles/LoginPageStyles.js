@@ -94,6 +94,24 @@ export const ParticlesContainer = styled.div`
   pointer-events: none;
 `;
 
+export const StyledButton = styled.button`
+  width: 100%;
+  padding: 12px;
+  font-size: 1.2rem;
+  background: #c99833;
+  color: black;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+  margin-bottom: 10px;
+
+  &:hover {
+    background: #a8772b;
+    transform: scale(1.05);
+  }
+`;
+
 // AI Particle (Glowing Node)
 export const Particle = styled.div`
   position: absolute;

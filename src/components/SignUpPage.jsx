@@ -8,12 +8,15 @@ import {
   LeftPanel,
   ArtImage,
 } from "../styles/SignUpStyles";
-import { validateEmail, validatePassword, registerUser } from "../utils/AuthUtils";
+import { validateEmail, validatePassword, registerUser , registerDoctor } from "../utils/AuthUtils";
 import { useNavigate } from "react-router-dom";
 import Image1 from "../assets/Image1.png"; // Importing the eye image
-
+import { nav } from "framer-motion/client";
+import { useUser } from "../contexts/UserContext";
 
 const SignUpPage = () => {
+
+  const { login } = useUser();
   const [formData, setFormData] = useState({
     Role: "",
     FirstName: "",
@@ -54,21 +57,50 @@ const SignUpPage = () => {
       setErrors(newErrors);
       return;
     }
+    const UserRole = formData.Role;
+    if (UserRole === "Doctor") {
+      try{
 
-    try {
-      const response = await registerUser(formData);
-      console.log(response.body.message);
+        const {Role, ...doctorData} = formData;
 
-      if (response.status === 201) {
-        navigate("/PatientUpload");
-      } else if (response.status === 400) {
-        setErrors({ email: "Email already used" });
-      } else {
-        setErrors({ api: "Something went wrong. Please try again" });
+        const response = await registerDoctor(doctorData);
+        console.log(response.body.message);
+
+        if (response.status === 201) {
+          login(response.body.doctorId , UserRole);
+          navigate("/doctor-dashboard");
+        } else if (response.status === 400) {
+          setErrors({ email: "Email already used" });
+        } else {
+          setErrors({ api: "Something went wrong. Please try again" });
+        }
+      } catch (err) {
+        setErrors({ api: err.message });
+        return;
       }
-    } catch (err) {
-      setErrors({ api: err.message });
     }
+    else if (UserRole === "Patient") {
+      try {
+        const {Role, ...patientData} = formData;
+        const response = await registerUser(patientData);
+
+        if (response.status === 201) {
+          console.log("Registration successful:", response);
+          const userId = response.body.UserId;
+          console.log("User ID:", userId);
+          login(userId ,UserRole);
+          navigate("/patient-dashboard");
+        } else if (response.status === 400) {
+          setErrors({ email: "Email already used" });
+        } else {
+          setErrors({ api: "Something went wrong. Please try again" });
+        }
+      } catch (err) {
+        setErrors({ api: err.message });
+        return;
+      }
+    }
+    
   };
 
   return (

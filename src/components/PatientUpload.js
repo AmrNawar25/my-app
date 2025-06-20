@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { analyzeXray } from "../utils/uploadPageUtils"
+import { useUser } from "../contexts/UserContext";
 
 import {
   UploadContainer,
@@ -16,6 +17,8 @@ import {
 import { FaUpload, FaCheckCircle, FaExclamationTriangle, FaRedo } from "react-icons/fa";
 
 const PatientUpload = () => {
+  const { userId } = useUser();
+
   const [selectedImage, setSelectedImage] = useState(null);
   const [uploadedImage, setUploadedImage] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -42,7 +45,7 @@ const PatientUpload = () => {
 
     try {
       // Call API
-      const { predicted_disease, impression, recommendation } = await analyzeXray(uploadedImage); 
+      const { predicted_disease, impression, recommendation } = await analyzeXray(uploadedImage,userId); 
       
       // Format and set result
       setResult({
