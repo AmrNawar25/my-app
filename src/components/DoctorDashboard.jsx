@@ -348,7 +348,7 @@ const DoctorDashboard = () => {
 
                     {/* Clickable X-ray image */}
                     <img
-                      src={`http://localhost:5000/${selectedReport.XrayImageId.ImageUrl}`}
+                      src={`${selectedReport.XrayImageId.ImageUrl}`}
                       alt="X-ray"
                       style={{
                         width: "100%",
@@ -439,7 +439,7 @@ const DoctorDashboard = () => {
                     >
                       {console.log("Expanded image URL:", selectedReport.XrayImageId.ImageUrl)}
                       <img
-                        src={`http://localhost:5000/${selectedReport.XrayImageId.ImageUrl}`}
+                        src={`${selectedReport.XrayImageId.ImageUrl}`}
                         alt="Expanded X-ray"
                         style={{
                           maxWidth: "90vw",

@@ -1,5 +1,7 @@
+const API_URL = process.env.REACT_APP_API_URL
+
 const getUserData = async (userId) =>{
-    const response = await fetch(`http://localhost:5000/api/users/userData/${userId}`, {
+    const response = await fetch(`${API_URL}/api/users/userData/${userId}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
     });
@@ -12,7 +14,7 @@ const getUserData = async (userId) =>{
 }
 
 const getDoctorData = async (doctorId) => {
-    const response = await fetch(`http://localhost:5000/api/doctors/doctorData/${doctorId}`, {
+    const response = await fetch(`${API_URL}/api/doctors/doctorData/${doctorId}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
     });
@@ -25,7 +27,7 @@ const getDoctorData = async (doctorId) => {
 }
 
 const getDoctorReportStatus = async (doctorId) => {
-    const response = await fetch(`http://localhost:5000/api/doctors/doctorReportStatsSummary/${doctorId}`, {
+    const response = await fetch(`${API_URL}/api/doctors/doctorReportStatsSummary/${doctorId}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
     });
@@ -36,7 +38,7 @@ const getDoctorReportStatus = async (doctorId) => {
 }
 
 const getDoctorWeeklyStatus = async (doctorId) => {
-    const response = await fetch(`http://localhost:5000/api/doctors/doctorWeeklyStatus/${doctorId}`, {
+    const response = await fetch(`${API_URL}/api/doctors/doctorWeeklyStatus/${doctorId}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
     });

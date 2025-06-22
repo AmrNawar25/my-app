@@ -1,8 +1,10 @@
 import jsPDF from "jspdf";
 import format from "date-fns/format";
 
+const API_URL = process.env.REACT_APP_API_URL
+
 const GetUserReports = async (UserId) => {
-    const response = await fetch(`http://localhost:5000/api/reports/user_reports/${UserId}`, {
+    const response = await fetch(`${API_URL}/api/reports/user_reports/${UserId}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
     });
@@ -20,7 +22,7 @@ const GetUserReports = async (UserId) => {
 }
 
 const GetDoctorReports = async (DoctorId) => {
-    const response = await fetch(`http://localhost:5000/api/reports/doctor_reports/${DoctorId}`, {
+    const response = await fetch(`${API_URL}/api/reports/doctor_reports/${DoctorId}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
     });
@@ -34,7 +36,7 @@ const GetDoctorReports = async (DoctorId) => {
 }
 
 const EditReport = async (reportId, updatedData) => {
-    const response = await fetch(`http://localhost:5000/api/reports/edit_report/${reportId}`, {
+    const response = await fetch(`${API_URL}/api/reports/edit_report/${reportId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedData)

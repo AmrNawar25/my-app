@@ -1,4 +1,6 @@
 // Validation utilities
+const API_URL = process.env.REACT_APP_API_URL
+
 const validateEmail = (email) => {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return re.test(email);
@@ -10,7 +12,8 @@ const validatePassword = (password) => {
 
 
 const loginUser = async (credentials) => {
-  const response = await fetch('http://localhost:5000/api/auth/signinUser', {
+  console.log(API_URL)
+  const response = await fetch(`${API_URL}/api/auth/signinUser`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(credentials)
@@ -20,7 +23,7 @@ const loginUser = async (credentials) => {
 };
 
 const registerUser = async (userData) => {
-  const response = await fetch('http://localhost:5000/api/auth/signupUser', {
+  const response = await fetch(`${API_URL}/api/auth/signupUser`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(userData)
@@ -30,7 +33,7 @@ const registerUser = async (userData) => {
 };
 
 const registerDoctor = async (doctorData) => {
-  const response = await fetch('http://localhost:5000/api/auth/signupDoctor', {
+  const response = await fetch(`${API_URL}/api/auth/signupDoctor`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(doctorData)
@@ -40,7 +43,7 @@ const registerDoctor = async (doctorData) => {
 };
 
 const loginDoctor = async (credentials) => {
-  const response = await fetch('http://localhost:5000/api/auth/signinDoctor', {
+  const response = await fetch(`${API_URL}/api/auth/signinDoctor`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(credentials)
